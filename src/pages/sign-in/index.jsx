@@ -16,6 +16,7 @@ import IconButton from "@mui/material/IconButton";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import "../../App.css"
 
 const Index = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -115,10 +116,10 @@ const Index = () => {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-semibold text-center text-gray-800">
-          Sign-In
+    <div className="flex h-screen items-center justify-center bg-gray-100 sign">
+      <div className="w-full max-w-2xl h-3/5 px-20 py-8 bg-white rounded-tl-[30px] rounded-br-[30px] shadow-md opacity-90">
+        <h1 className="text-6xl font-bold text-center text-gray-800">
+          Log In
         </h1>
         <Formik
           initialValues={{ email: "", password: "" }}
@@ -133,7 +134,7 @@ const Index = () => {
             touched,
             isSubmitting,
           }) => (
-            <Form id="submit" className="mt-6 space-y-4">
+            <Form id="submit" className="mt-8 space-y-4">
               <TextField
                 fullWidth
                 label="Email"
@@ -143,10 +144,14 @@ const Index = () => {
                 value={values.email}
                 type="text"
                 id="email"
-                className="my-2"
                 error={touched.email && Boolean(errors.email)}
                 helperText={touched.email && errors.email}
               />
+              <div className="flex justify-end">
+                <a className=" text-blue-500 text-xl" href="#" onClick={() => setForgotPasswordModalOpen(true)}>
+                  Forgot Password?
+                </a>
+              </div>
               <div>
                 <TextField
                   fullWidth
@@ -175,7 +180,7 @@ const Index = () => {
                   helperText={touched.password && errors.password}
                 />
               </div>
-              <div className="text-center flex">
+              {/* <div className="text-center flex">
                 <a
                   onClick={moveRegister}
                   href="#"
@@ -186,19 +191,15 @@ const Index = () => {
                   </span>{" "}
                   Register
                 </a>
-              </div>
-              <div>
-                <a href="#" onClick={() => setForgotPasswordModalOpen(true)}>
-                  Parolni unitdingizmi?
-                </a>
-              </div>
+              </div> */}
+
               <div className="mt-2 text-center">
                 <button
                   type="submit"
-                  className="px-4 py-2 flex justify-center w-full text-center text-white bg-blue-500 rounded hover:bg-blue-600"
+                  className="px-4 py-3 flex text-lg font-semibold uppercase justify-center w-full text-center text-white bg-blue-500 rounded hover:bg-blue-600"
                   disabled={isSubmitting}
                 >
-                  Sign In
+                  Submit
                 </button>
               </div>
             </Form>
