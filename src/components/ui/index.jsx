@@ -1,6 +1,6 @@
-import Category from "./Category"
+import CategoryTable from "./Category"
 import Products from "./products"
 import ResponsiveDrawer from "./ResponsiveDrawer"
-import Workers from "./workers"
+import WorkerTable from "./workers"
 
-export {Category, Products, ResponsiveDrawer, Workers}
+export {CategoryTable, Products, ResponsiveDrawer, WorkerTable}

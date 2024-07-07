@@ -12,6 +12,7 @@ export default defineConfig({
       { find: "@validation", replacement: "/src/utils/index.js" },
       { find: "@modal", replacement: "/src/components/modals/index.jsx" },
       { find: "@ui", replacement: "/src/components/ui/index.jsx" },
+      { find: "@service", replacement: "/src/service/index.js" },
     ],
   },
 });

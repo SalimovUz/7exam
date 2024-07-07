@@ -1,6 +1,7 @@
-// Service valiadtion in create
+import * as Yup from "yup";
 
-export const serviceValidationScheme = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  price: Yup.string().required("Price is required"),
+export const categoryValidationScheme = Yup.object().shape({
+  category_name: Yup.string()
+    .required("Category name is required")
+    .min(3, "Category name must be at least 3 characters long"),
 });

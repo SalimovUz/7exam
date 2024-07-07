@@ -62,7 +62,11 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <Toolbar>
-        <img src={Logo} alt="logo" className="w-[144px]" />
+        <img
+          src="https://www.svgrepo.com/show/441604/clothes.svg"
+          alt="logo"
+          className="w-[144px] h-16 flex justify-center ml-4"
+        />
       </Toolbar>
       <Divider />
       <List>
@@ -129,7 +133,11 @@ function ResponsiveDrawer(props) {
                 className="cursor-pointer"
                 onClick={handleIconClick}
               /> */}
-              <Profile onClose={closeModal} saveProfile={saveProfile} isOpen={isOpen} />
+              <Profile
+                onClose={closeModal}
+                saveProfile={saveProfile}
+                isOpen={isOpen}
+              />
               <LogOut />
             </div>
           </ListItem>

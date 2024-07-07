@@ -1,5 +1,7 @@
-import LogOut from "./logout"
-import SignIn from "./sign-in"
-import Profile from "./profile"
+import LogOut from "./logout";
+import SignIn from "./sign-in";
+import Profile from "./profile";
+import CategoryModal from "./category";
+import WorkerModal from "./workerModal";
 
-export { LogOut, SignIn, Profile }
+export { LogOut, SignIn, Profile, CategoryModal, WorkerModal };

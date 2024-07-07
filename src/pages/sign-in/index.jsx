@@ -36,10 +36,6 @@ const Index = () => {
       .required("Parolni kiriting"),
   });
 
-  const moveRegister = () => {
-    navigate("/sign-up");
-  };
-
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -51,7 +47,6 @@ const Index = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await auth.sign_in(values);
-      console.log("Response: ", response);
 
       if (response.status === 200) {
         toast.success("Succesfully!");
@@ -118,11 +113,12 @@ const Index = () => {
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100 sign">
       <div className="w-full max-w-2xl h-3/5 px-20 py-8 bg-white rounded-tl-[30px] rounded-br-[30px] shadow-md opacity-90">
-        <h1 className="text-6xl font-bold text-center text-gray-800">
-          Log In
-        </h1>
+        <h1 className="text-6xl font-bold text-center text-gray-800">Log In</h1>
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{
+            email: "xasannosirov094@gmail.com",
+            password: "Sehtols@01",
+          }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -148,7 +144,11 @@ const Index = () => {
                 helperText={touched.email && errors.email}
               />
               <div className="flex justify-end">
-                <a className=" text-blue-500 text-xl" href="#" onClick={() => setForgotPasswordModalOpen(true)}>
+                <a
+                  className=" text-blue-500 text-xl"
+                  href="#"
+                  onClick={() => setForgotPasswordModalOpen(true)}
+                >
                   Forgot Password?
                 </a>
               </div>
