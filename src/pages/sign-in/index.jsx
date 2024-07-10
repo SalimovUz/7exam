@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../service";
+import { auth } from "@service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -65,50 +65,50 @@ const Index = () => {
     }
   };
 
-  const handleForgotPasswordSubmit = async () => {
-    try {
-      const response = await auth.forgot_password({
-        email: emailForPasswordReset,
-      });
-      if (response.status === 200) {
-        setForgotPasswordModalOpen(false);
-        setVerifyModalOpen(true);
-        toast.success("Kod yuborildi!");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Email topilmadi!");
-    }
-  };
+  // const handleForgotPasswordSubmit = async () => {
+  //   try {
+  //     const response = await auth.forgot_password({
+  //       email: emailForPasswordReset,
+  //     });
+  //     if (response.status === 200) {
+  //       setForgotPasswordModalOpen(false);
+  //       setVerifyModalOpen(true);
+  //       toast.success("Kod yuborildi!");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("Email topilmadi!");
+  //   }
+  // };
 
-  const handleVerifySubmit = async (values, { setSubmitting }) => {
-    const email = localStorage.getItem("email");
+  // const handleVerifySubmit = async (values, { setSubmitting }) => {
+  //   const email = localStorage.getItem("email");
 
-    if (!email) {
-      toast.error("Email not found in localStorage");
-      setSubmitting(false);
-      return;
-    }
+  //   if (!email) {
+  //     toast.error("Email not found in localStorage");
+  //     setSubmitting(false);
+  //     return;
+  //   }
 
-    const payload = {
-      code: values.code,
-      email: email,
-      new_password: values.password,
-    };
+  //   const payload = {
+  //     code: values.code,
+  //     email: email,
+  //     new_password: values.password,
+  //   };
 
-    try {
-      const response = await auth.verify_forgot_password(payload);
-      if (response.status === 201) {
-        setVerifyModalOpen(false);
-        toast.success("Parol muvaffaqiyatli yangilandi!");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Kod yoki parol noto'g'ri!");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  //   try {
+  //     const response = await auth.verify_forgot_password(payload);
+  //     if (response.status === 201) {
+  //       setVerifyModalOpen(false);
+  //       toast.success("Parol muvaffaqiyatli yangilandi!");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("Kod yoki parol noto'g'ri!");
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100 sign">
@@ -217,7 +217,7 @@ const Index = () => {
           pauseOnHover
         />
       </div>
-      <Dialog
+      {/* <Dialog
         open={forgotPasswordModalOpen}
         onClose={() => setForgotPasswordModalOpen(false)}
       >
@@ -233,17 +233,17 @@ const Index = () => {
             value={emailForPasswordReset}
             onChange={(e) => setEmailForPasswordReset(e.target.value)}
           />
-        </DialogContent>
-        <DialogActions>
+        </DialogContent> */}
+        {/* <DialogActions>
           <Button onClick={() => setForgotPasswordModalOpen(false)}>
             Cancel
           </Button>
           <Button onClick={handleForgotPasswordSubmit} color="primary">
             Submit
           </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={verifyModalOpen} onClose={() => setVerifyModalOpen(false)}>
+        </DialogActions> */}
+      {/* </Dialog> */}
+      {/* <Dialog open={verifyModalOpen} onClose={() => setVerifyModalOpen(false)}>
         <DialogTitle>Verify Code & Reset Password</DialogTitle>
         <Formik
           initialValues={{
@@ -324,7 +324,7 @@ const Index = () => {
             </Form>
           )}
         </Formik>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

@@ -30,13 +30,13 @@ const style = {
 
 const WorkerModal = ({ open, handleClose, item, setData }) => {
   const initialValues = {
-    first_name: item?.first_name || "",
-    email: item?.email || "",
-    age: item?.age ? String(item?.age) : "",
-    gender: item?.gender || "",
-    last_name: item?.last_name || "",
-    password: item?.password || "",
-    phone_number: item?.phone_number || "",
+    age: item?.age ? item.age : "",
+    email: item?.email ? item.email : "",
+    first_name: item?.first_name ? item.first_name : "",
+    last_name: item?.last_name ? item.last_name : "",
+    gender: item?.gender ? item.gender : "",
+    password: item?.password ? item.password : "",
+    phone_number: item?.phone_number ? item.phone_number : "",
   };
 
   const validationSchema = Yup.object({
@@ -59,45 +59,30 @@ const WorkerModal = ({ open, handleClose, item, setData }) => {
       .matches(/^\+998\d{9}$/, "Phone number is not valid")
       .required("Required"),
   });
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const phoneNumber = values.phone_number.replace(/^\+/, "");
-
-      const payload = {
-        ...values,
-        age: parseInt(values.age, 10),
-        phone_number: phoneNumber,
-      };
-
-      if (item) {
-        const response = await worker.update(payload);
-        if (response.status === 200) {
-          setData((prevData) =>
-            prevData.map((cat) =>
-              cat.id === item.id ? { ...cat, ...values } : cat
-            )
-          );
-          toast.success("Worker updated successfully!");
-        } else {
-          throw new Error("Failed to update worker");
-        }
-      } else {
-        const response = await worker.create(payload);
-        if (response.status === 201) {
-          setData((prevData) => [...prevData, response.data]);
-          toast.success("Worker created successfully!");
-        } else {
-          throw new Error("Failed to create worker");
-        }
-      }
-      handleClose();
-    } catch (error) {
-      toast.error("An error occurred");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  
+  const handleSubmit = async (values) => {
+     const phoneNumber = values.phone_number.replace(/^\+/, "");
+     if (item) {
+       const payload = { id: item.id, ...values, phoneNumber };
+       try {
+         const response = await worker.update(payload);
+         if (response.status === 200) {
+           window.location.reload();
+         }
+       } catch (error) {
+         console.log(error);
+       }
+     } else {
+       try {
+         const response = await worker.create(values);
+         if (response.status === 201) {
+           window.location.reload();
+         }
+       } catch (error) {
+         console.log(error);
+       }
+     }
+   };
 
   return (
     <>

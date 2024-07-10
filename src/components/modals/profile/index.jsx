@@ -23,6 +23,11 @@ export default function Index() {
     setAnchorEl(null);
   };
 
+  const logout = () => {
+    localStorage.removeItem("access_token");
+    window.location.reload();
+  };
+
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
@@ -52,7 +57,7 @@ export default function Index() {
           </ListItem>
           <ListItem button>
             <ListItemIcon>
-              <AccountCircleIcon/>
+              <AccountCircleIcon />
             </ListItemIcon>
             <ListItemText primary="My account" />
           </ListItem>
@@ -70,8 +75,10 @@ export default function Index() {
             <ListItemText primary="Settings" />
           </ListItem>
           <ListItem button>
-            <ListItemIcon>
-              <ExitToAppIcon />
+            <ListItemIcon onClick={logout}>
+              <div onClick={logout}>
+                <ExitToAppIcon />
+              </div>
             </ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>

@@ -14,13 +14,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { Button, ListItemText } from "@mui/material";
+import { ListItemText } from "@mui/material";
 import { LogOut } from "@modal";
 import routes from "../../../router/routes";
-import Logo from "../../../assets/Logo.svg";
 import { Profile } from "@modal";
-// import { Menu, Transition } from "@headlessui/react";
-// import { ChevronDownIcon } from "@heroicons/react";
+import Logo from "../../../assets/Logo.svg";
 
 const drawerWidth = 240;
 
@@ -29,20 +27,15 @@ function ResponsiveDrawer(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [menu, setMenu] = React.useState("Category");
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  // const handleIconClick = () => {
-  //   setProfileModal(true);
-  // };
-
   const closeModal = () => {
-    setProfileModal(false);
+    setIsOpen(false);
   };
 
-  const saveProfile = (profile) => {
-    setUserProfile(profile);
-  };
+  const saveProfile = (profile) => {};
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -58,6 +51,18 @@ function ResponsiveDrawer(props) {
       setMobileOpen(!mobileOpen);
     }
   };
+
+  React.useEffect(() => {
+    if (pathname.includes("Category")) {
+      setMenu("Category");
+    } else if (pathname.includes("Products")) {
+      setMenu("Products");
+    } else if (pathname.includes("Workers")) {
+      setMenu("Workers");
+    } else {
+      setMenu("Category");
+    }
+  }, [pathname]);
 
   const drawer = (
     <div>
@@ -89,7 +94,7 @@ function ResponsiveDrawer(props) {
                     {item.icon}
                   </span>
                 </ListItemIcon>
-                <ListItemText primary={item?.content} />
+                <ListItemText primary={item.content} />
               </ListItemButton>
             </ListItem>
           </NavLink>
@@ -125,14 +130,9 @@ function ResponsiveDrawer(props) {
           </IconButton>
           <ListItem sx={{ justifyContent: "space-between" }}>
             <Typography variant="h6" noWrap component="div">
-              Responsive drawer
+              {menu}
             </Typography>
             <div className="flex items-center space-x-4">
-              {/* <AccountCircleIcon
-                sx={{ height: 40, width: 40 }}
-                className="cursor-pointer"
-                onClick={handleIconClick}
-              /> */}
               <Profile
                 onClose={closeModal}
                 saveProfile={saveProfile}
@@ -159,7 +159,6 @@ function ResponsiveDrawer(props) {
           }}
           sx={{
             display: { xs: "block", sm: "none" },
-
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
@@ -172,7 +171,6 @@ function ResponsiveDrawer(props) {
           variant="permanent"
           sx={{
             display: { xs: "none", sm: "block" },
-
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
@@ -194,12 +192,6 @@ function ResponsiveDrawer(props) {
         <Toolbar />
         <Outlet />
       </Box>
-      {/* <Profile
-        isOpen={isOpen}
-        closeModal={closeModal}
-        userProfile={{}}
-        saveProfile={() => {}}
-      /> */}
     </Box>
   );
 }
