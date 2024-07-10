@@ -30,13 +30,14 @@ const style = {
 
 const WorkerModal = ({ open, handleClose, item, setData }) => {
   const initialValues = {
-    age: item?.age ? item.age : "",
+    age: item?.age ? Number(item.age) : "",
     email: item?.email ? item.email : "",
     first_name: item?.first_name ? item.first_name : "",
     last_name: item?.last_name ? item.last_name : "",
     gender: item?.gender ? item.gender : "",
     password: item?.password ? item.password : "",
     phone_number: item?.phone_number ? item.phone_number : "",
+    id: item?.id ? item.id : "",
   };
 
   const validationSchema = Yup.object({
@@ -59,30 +60,36 @@ const WorkerModal = ({ open, handleClose, item, setData }) => {
       .matches(/^\+998\d{9}$/, "Phone number is not valid")
       .required("Required"),
   });
-  
-  const handleSubmit = async (values) => {
-     const phoneNumber = values.phone_number.replace(/^\+/, "");
-     if (item) {
-       const payload = { id: item.id, ...values, phoneNumber };
-       try {
-         const response = await worker.update(payload);
-         if (response.status === 200) {
-           window.location.reload();
-         }
-       } catch (error) {
-         console.log(error);
-       }
-     } else {
-       try {
-         const response = await worker.create(values);
-         if (response.status === 201) {
-           window.location.reload();
-         }
-       } catch (error) {
-         console.log(error);
-       }
-     }
-   };
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+    const phoneNumber = values.phone_number.replace(/^\+/, "");
+    const payload = { ...values, phone_number: phoneNumber, id: values.id };
+    try {
+      if (item) {
+        payload.id = item.id;
+        const response = await worker.update(payload);
+        if (response.status === 200) {
+          toast.success("Worker updated successfully!");
+          setData((prevData) =>
+            prevData.map((worker) => (worker.id === item.id ? payload : worker))
+          );
+        }
+      } else {
+        const response = await worker.create(payload);
+        if (response.status === 201) {
+          toast.success("Worker created successfully!");
+          setData((prevData) => [...prevData, payload]);
+        }
+      }
+      handleClose();
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while saving the worker.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -131,7 +138,7 @@ const WorkerModal = ({ open, handleClose, item, setData }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.age}
-                  type="text"
+                  type="number"
                   id="age"
                   required
                   className="my-2"
@@ -159,7 +166,6 @@ const WorkerModal = ({ open, handleClose, item, setData }) => {
                 >
                   <RadioGroup
                     name="gender"
-                    typeof="text"
                     value={values.gender}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -205,7 +211,7 @@ const WorkerModal = ({ open, handleClose, item, setData }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.password}
-                  type="text"
+                  type="password"
                   id="password"
                   required
                   className="my-2"
@@ -226,7 +232,6 @@ const WorkerModal = ({ open, handleClose, item, setData }) => {
                   error={touched.phone_number && Boolean(errors.phone_number)}
                   helperText={touched.phone_number && errors.phone_number}
                 />
-
                 <div className="flex justify-between">
                   <Button
                     onClick={handleClose}

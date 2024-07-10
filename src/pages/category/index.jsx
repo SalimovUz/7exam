@@ -10,7 +10,7 @@ const Index = () => {
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
   const [params, setParams] = useState({
-    limit: 5,
+    limit: 10,
     page: 1,
   });
 

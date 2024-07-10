@@ -83,13 +83,10 @@ const SinglePage = () => {
       if (imgElement.requestFullscreen) {
         imgElement.requestFullscreen();
       } else if (imgElement.mozRequestFullScreen) {
-        /* Firefox */
         imgElement.mozRequestFullScreen();
       } else if (imgElement.webkitRequestFullscreen) {
-        /* Chrome, Safari and Opera */
         imgElement.webkitRequestFullscreen();
       } else if (imgElement.msRequestFullscreen) {
-        /* IE/Edge */
         imgElement.msRequestFullscreen();
       }
     }
@@ -109,14 +106,7 @@ const SinglePage = () => {
     const { className, style, onClick } = props;
     return (
       <div
-        className={className}
-        style={{
-          ...style,
-          display: "block",
-          background: "rgba(0, 0, 0, 0.5)",
-          borderRadius: "50%",
-          padding: "10px",
-        }}
+        className={`${className} block bg-black/50 rounded-full p-2`}
         onClick={onClick}
       />
     );
@@ -126,14 +116,7 @@ const SinglePage = () => {
     const { className, style, onClick } = props;
     return (
       <div
-        className={className}
-        style={{
-          ...style,
-          display: "block",
-          background: "rgba(0, 0, 0, 0.5)",
-          borderRadius: "50%",
-          padding: "10px",
-        }}
+        className={`${className} block bg-black/50 rounded-full p-2`}
         onClick={onClick}
       />
     );
@@ -146,7 +129,7 @@ const SinglePage = () => {
         <ArrowBackIcon />
       </div>
       <div className="p-6 flex">
-        <div className="left flex flex-col mr-6">
+        <div className="flex flex-col mr-6">
           {images.map((image, index) => (
             <img
               key={index}
@@ -159,7 +142,7 @@ const SinglePage = () => {
             />
           ))}
         </div>
-        <div className="right flex-1 relative">
+        <div className="flex-1 relative">
           {selectedImage && (
             <div className="relative">
               <img
@@ -230,12 +213,14 @@ const SinglePage = () => {
         >
           <h2>Upload Image</h2>
           <input type="file" onChange={handleFileChange} />
-          <Button onClick={handleAddImg} variant="contained" color="primary">
-            Upload
-          </Button>
-          <Button onClick={closeModal} variant="outlined" color="secondary">
-            Cancel
-          </Button>
+          <div className="flex justify-between mt-4">
+            <Button onClick={handleAddImg} variant="contained" color="primary">
+              Upload
+            </Button>
+            <Button onClick={closeModal} variant="outlined" color="secondary">
+              Cancel
+            </Button>
+          </div>
         </Box>
       </Modal>
     </>

@@ -4,18 +4,23 @@ import { WorkerModal } from "@modal";
 import { WorkerTable } from "@ui";
 import { worker } from "@service";
 import Pagination from "@mui/material/Pagination";
+import http from "../../service/config"
 
 const Index = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
   const [params, setParams] = useState({
-    limit: 5,
+    limit: 10,
     page: 1,
   });
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    http.get("/workers", {params})
+  })
 
   const getData = async () => {
     try {
@@ -35,10 +40,10 @@ const Index = () => {
   }, [params]);
 
   const handleChange = (event, value) => {
-    setParams({
-      ...params,
+    setParams((prevParams) => ({
+      ...prevParams,
       page: value,
-    });
+    }));
   };
 
   return (

@@ -51,8 +51,9 @@ const Index = () => {
       if (response.status === 200) {
         toast.success("Succesfully!");
         localStorage.setItem("access_token", response?.data?.access_token);
+        localStorage.setItem("refresh_token", response?.data?.refresh_token);
         setTimeout(() => {
-          navigate("/");
+          navigate("/workers");
         }, 1500);
       } else {
         toast.error("Login failed. Please try again.");
@@ -65,50 +66,6 @@ const Index = () => {
     }
   };
 
-  // const handleForgotPasswordSubmit = async () => {
-  //   try {
-  //     const response = await auth.forgot_password({
-  //       email: emailForPasswordReset,
-  //     });
-  //     if (response.status === 200) {
-  //       setForgotPasswordModalOpen(false);
-  //       setVerifyModalOpen(true);
-  //       toast.success("Kod yuborildi!");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Email topilmadi!");
-  //   }
-  // };
-
-  // const handleVerifySubmit = async (values, { setSubmitting }) => {
-  //   const email = localStorage.getItem("email");
-
-  //   if (!email) {
-  //     toast.error("Email not found in localStorage");
-  //     setSubmitting(false);
-  //     return;
-  //   }
-
-  //   const payload = {
-  //     code: values.code,
-  //     email: email,
-  //     new_password: values.password,
-  //   };
-
-  //   try {
-  //     const response = await auth.verify_forgot_password(payload);
-  //     if (response.status === 201) {
-  //       setVerifyModalOpen(false);
-  //       toast.success("Parol muvaffaqiyatli yangilandi!");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Kod yoki parol noto'g'ri!");
-  //   } finally {
-  //     setSubmitting(false);
-  //   }
-  // };
 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100 sign">

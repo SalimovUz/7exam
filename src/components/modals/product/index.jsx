@@ -45,8 +45,11 @@ const validationSchema = Yup.object({
   for_gender: Yup.string().required("Required"),
   made_in: Yup.string().required("Required"),
   product_name: Yup.string().required("Required"),
-  size: Yup.string().required("Required"),
+  size: Yup.mixed()
+    .oneOf(["M", "CM", "D", "C", "XC", "L", "XL", "X", "V", "I"])
+    .required("Required"),
 });
+
 
 const ProductForm = ({ open, handleClose, item, setClose, close }) => {
   const [products, setProducts] = useState([]);
@@ -103,7 +106,6 @@ const ProductForm = ({ open, handleClose, item, setClose, close }) => {
 
     try {
       const response = await product.create(newValue);
-      console.log(response.data, "response");
       if (response.status === 201) {
         toast.success("Product added successfully!");
         setClose(!close);
