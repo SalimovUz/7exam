@@ -53,7 +53,7 @@ const Index = () => {
         localStorage.setItem("access_token", response?.data?.access_token);
         localStorage.setItem("refresh_token", response?.data?.refresh_token);
         setTimeout(() => {
-          navigate("/workers");
+          navigate("/");
         }, 1500);
       } else {
         toast.error("Login failed. Please try again.");

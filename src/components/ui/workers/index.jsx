@@ -6,7 +6,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Skeleton from "@mui/material/Skeleton";
 import editImg from "../../../assets/edit.svg";
 import deleteImg from "../../../assets/delete.svg";
 import { worker } from "@service";
@@ -34,6 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function WorkerTable({ data, setData }) {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const handleOpen = (item) => {
     setSelectedItem(item);
@@ -52,6 +54,17 @@ export default function WorkerTable({ data, setData }) {
     }
   };
 
+  useEffect(() => {
+    // Simulating data fetching
+    const fetchData = async () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000); // Simulated delay
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -67,37 +80,63 @@ export default function WorkerTable({ data, setData }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item, index) => (
-              <StyledTableRow key={item.id}>
-                <StyledTableCell component="th" scope="row">
-                  {index + 1}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {item.first_name}
-                </StyledTableCell>
-                <StyledTableCell align="center">{item.gender}</StyledTableCell>
-                <StyledTableCell align="center">
-                  {item.last_name}
-                </StyledTableCell>
-                <StyledTableCell align="center">{item.age}</StyledTableCell>
-                <StyledTableCell className="flex" align="center">
-                  <div className="flex items-center space-x-4 justify-center">
-                    <img
-                      onClick={() => handleOpen(item)}
-                      src={editImg}
-                      alt="bir"
-                      className="cursor-pointer hover:scale-125 transition-all duration-200"
-                    />
-                    <img
-                      onClick={() => handleDelete(item.id)}
-                      src={deleteImg}
-                      alt=""
-                      className="cursor-pointer hover:scale-125 transition-all duration-200"
-                    />
-                  </div>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {loading
+              ? [...Array(5)].map((_, index) => (
+                  <StyledTableRow key={index}>
+                    <StyledTableCell>
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="rectangular" width={40} height={40} />
+                      <Skeleton variant="rectangular" width={40} height={40} />
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))
+              : data.map((item, index) => (
+                  <StyledTableRow key={item.id}>
+                    <StyledTableCell component="th" scope="row">
+                      {index + 1}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.first_name}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.last_name}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.gender}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{item.age}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      <div className="flex items-center space-x-4 justify-center">
+                        <img
+                          onClick={() => handleOpen(item)}
+                          src={editImg}
+                          alt="edit"
+                          className="cursor-pointer hover:scale-125 transition-all duration-200"
+                        />
+                        <img
+                          onClick={() => handleDelete(item.id)}
+                          src={deleteImg}
+                          alt="delete"
+                          className="cursor-pointer hover:scale-125 transition-all duration-200"
+                        />
+                      </div>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
           </TableBody>
         </Table>
       </TableContainer>

@@ -1,7 +1,6 @@
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -10,8 +9,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
+import Skeleton from "@mui/material/Skeleton";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import editImg from "../../../assets/edit.svg";
 import deleteImg from "../../../assets/delete.svg";
 import { product } from "@service";
@@ -19,7 +21,6 @@ import { media } from "@service";
 import { ProductModal } from "@modal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,7 +41,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function Products({ data, setData }) {
+const Products = ({ data, setData }) => {
   const [edit, setEdit] = useState({});
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
@@ -49,6 +50,7 @@ export default function Products({ data, setData }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const deleteItem = async (id) => {
     try {
@@ -81,6 +83,12 @@ export default function Products({ data, setData }) {
       getData(productId);
     }
   }, [productId]);
+
+  useEffect(() => {
+    if (data.length) {
+      setLoading(false);
+    }
+  }, [data]);
 
   const handleAddImg = async () => {
     if (!file || !productId) return;
@@ -148,40 +156,74 @@ export default function Products({ data, setData }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item, index) => (
-              <StyledTableRow key={index}>
-                <StyledTableCell align="center">{index + 1}</StyledTableCell>
-                <StyledTableCell align="center">
-                  {item.product_name}
-                </StyledTableCell>
-                <StyledTableCell align="center">{item.color}</StyledTableCell>
-                <StyledTableCell align="center">{item.size}</StyledTableCell>
-                <StyledTableCell align="center">{item.count}</StyledTableCell>
-                <StyledTableCell align="center">{item.cost}</StyledTableCell>
-                <StyledTableCell align="center">
-                  <div className="flex items-center space-x-4 justify-center">
-                    <div className="flex items-center">
-                      <button
-                        onClick={() => openModal(item.product_id)}
-                        className="cursor-pointer hover:scale-125 transition-all duration-200"
-                      >
-                        <AddPhotoAlternateIcon />
-                      </button>
-                    </div>
-                    <img
-                      onClick={() => deleteItem(item.product_id)}
-                      src={deleteImg}
-                      alt="delete"
-                      className="cursor-pointer hover:scale-125 transition-all duration-200"
-                    />
-                    <VisibilityIcon
-                      className="cursor-pointer hover:scale-125 transition-all duration-300"
-                      onClick={() => viewItem(item)}
-                    />
-                  </div>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {loading
+              ? Array.from(new Array(5)).map((_, index) => (
+                  <StyledTableRow key={index}>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="text" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Skeleton variant="rectangular" height={24} width={100} />
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))
+              : data.map((item, index) => (
+                  <StyledTableRow key={index}>
+                    <StyledTableCell align="center">
+                      {index + 1}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.product_name}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.color}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.size}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.count}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.cost}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <div className="flex items-center space-x-4 justify-center">
+                        <button
+                          onClick={() => openModal(item.product_id)}
+                          className="cursor-pointer hover:scale-125 transition-all duration-200"
+                        >
+                          <AddPhotoAlternateIcon />
+                        </button>
+                        <img
+                          onClick={() => deleteItem(item.product_id)}
+                          src={deleteImg}
+                          alt="delete"
+                          className="cursor-pointer hover:scale-125 transition-all duration-200"
+                        />
+                        <VisibilityIcon
+                          className="cursor-pointer hover:scale-125 transition-all duration-300"
+                          onClick={() => viewItem(item)}
+                        />
+                      </div>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -208,4 +250,6 @@ export default function Products({ data, setData }) {
       </Modal>
     </>
   );
-}
+};
+
+export default Products;

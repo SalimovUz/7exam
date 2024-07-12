@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+// import Box from "@mui/material/Box";
+// import Skeleton from "@mui/material/Skeleton";
 import { Button } from "@mui/material";
 import { CategoryModal } from "@modal";
 import { CategoryTable } from "@ui";
@@ -56,6 +58,11 @@ const Index = () => {
           </Button>
         </div>
         <CategoryTable data={data} setData={setData} />
+        {/* <Box sx={{ width: 300 }}>
+          <Skeleton />
+          <Skeleton animation="wave" />
+          <Skeleton animation={false} />
+        </Box> */}
         <Pagination count={count} page={params.page} onChange={handleChange} />
       </div>
     </>

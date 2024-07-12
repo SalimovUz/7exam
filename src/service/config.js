@@ -38,6 +38,7 @@ http.interceptors.response.use(
   async (error) => {
     if (error.response && error.response.status === 401) {
       const access_token = await refreshAccessToken();
+      console.log(access_token);
       if (access_token) {
         const originalRequest = error.config;
         originalRequest.headers["Authorization"] = access_token;
